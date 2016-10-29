@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chatty.BLL
+namespace Chatty.DAL.Repositories
 {
-    public class Class1
+    public class UserRepository
     {
     }
 }
