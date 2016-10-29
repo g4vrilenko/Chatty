@@ -14,7 +14,7 @@ namespace Chatty.Tests.BLL_Tests
         [TestMethod]
         public void Constructor_IpAdreaaAndPort_InstanceOfServerClass()
         {
-            var server = new Server("127.0.0.1", 8080);
+            var server = new Server("127.0.0.1", 51111);
             
         }
     }

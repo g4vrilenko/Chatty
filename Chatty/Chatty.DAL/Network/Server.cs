@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Chatty.DAL.Network
@@ -12,8 +13,9 @@ namespace Chatty.DAL.Network
     public class Server
     {
         private IPAddress _ipAddress;
-        private int _port = 7777;
-        private TcpListener _listener;
+        private int _port;
+
+        public event Action<string> ServerError;
 
         public Server(string ipAddress, int port)
         {
@@ -28,6 +30,43 @@ namespace Chatty.DAL.Network
                 _port = port;
             else
                 throw new ArgumentException("Port not valid or not avalible");
+        }
+
+        public async Task RunAsync()
+        {
+            var listener = new TcpListener(_ipAddress, _port);
+            listener.Start();
+            try
+            {
+                while (true)
+                    Accept(await listener.AcceptTcpClientAsync());
+            }
+            finally
+            {
+                listener.Stop();
+            }
+        }
+
+        private void Accept(TcpClient tcpClient)
+        {
+            new Thread(ListenClient).Start(tcpClient);
+        }
+
+        private void ListenClient(object obj)
+        {
+            var client = (TcpClient)obj;
+            try
+            {
+                using (client)
+                using (var stream = client.GetStream())
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ServerError?.Invoke(ex.Message);
+            }
         }
 
         private bool PortIsAvailable(int port)
