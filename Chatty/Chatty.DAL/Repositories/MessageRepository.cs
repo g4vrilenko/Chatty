@@ -9,9 +9,9 @@ using System.Data.Entity;
 
 namespace Chatty.DAL.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class MessageRepository : Repository<Message>, IMessageRepository
     {
-        public UserRepository(ChattyContext context) : base(context)
+        public MessageRepository(ChattyContext context) : base(context)
         {
         }
     }

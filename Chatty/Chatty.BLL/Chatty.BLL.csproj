@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommunicationEntities\Requests\NewMessage.cs" />
+    <Compile Include="CommunicationEntities\Requests\SendNewMessage.cs" />
+    <Compile Include="CommunicationEntities\Requests\Update.cs" />
     <Compile Include="CommunicationEntities\Responses\ResponseStatus.cs" />
     <Compile Include="Contracts\IClient.cs" />
     <Compile Include="Contracts\IClientManager.cs" />
@@ -57,6 +58,12 @@
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\ServerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chatty.DAL\Chatty.DAL.csproj">
+      <Project>{54405ef7-b41d-499e-b848-820dd6981288}</Project>
+      <Name>Chatty.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

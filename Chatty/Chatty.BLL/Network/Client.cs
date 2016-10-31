@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Chatty.BLL.CommunicationEntities;
 using System.Threading;
 using Chatty.BLL.Helpers;
+using Chatty.BLL.CommunicationEntities.Requests;
+using Chatty.BLL.Entities;
 
 namespace Chatty.BLL.Network
 {
@@ -18,6 +20,9 @@ namespace Chatty.BLL.Network
         private int _port;
         private TcpClient _client;
         private Queue<Tuple<Request, Action<Response>>> _requests;
+        private object _syncObj = new object();
+
+        public event Action<List<Message>> IncomingMessages;
 
         public Client(string hostName, int port)
         {
@@ -41,12 +46,34 @@ namespace Chatty.BLL.Network
                 _client = new TcpClient();
                 _client.Connect(_hostName, _port);
                 ThreadPool.QueueUserWorkItem(ProcessRequests);
+                //ThreadPool.QueueUserWorkItem(GetUpdates);
             }
             catch
             {
                 return false;
             }
             return true;
+        }
+
+        private void GetUpdates(object state)
+        {
+            while (true)
+            {
+                lock (_syncObj)
+                {
+                    if (_requests.Count != 0)
+                    {
+                        var req = new Update();
+                        Action<Response> callback = res => 
+                        {
+
+                        };
+                        var job = new Tuple<Request, Action<Response>>(req, callback);
+                        _requests.Enqueue(job);
+                    }
+                }
+                Thread.Sleep(500);
+            }
         }
 
         public void AddRequest(Request req, Action<Response> callback)
@@ -58,9 +85,18 @@ namespace Chatty.BLL.Network
         {
             while (true)
             {
-                if (_requests.Count != 0)
+                Tuple<Request, Action<Response>> req = null;
+                var hasReq = false;
+                lock (_syncObj)
                 {
-                    var req = _requests.Dequeue();
+                    if (_requests.Count != 0)
+                    {
+                        req = _requests.Dequeue();
+                        hasReq = true;
+                    }
+                }
+                if (hasReq)
+                {
                     var res = Send(req.Item1);
                     req.Item2?.Invoke(res);
                 }

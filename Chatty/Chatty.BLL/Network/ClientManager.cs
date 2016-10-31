@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Chatty.BLL.Network
@@ -15,7 +16,7 @@ namespace Chatty.BLL.Network
 
         public ClientManager()
         {
-
+            
         }
 
         public bool ConnecToServer(string ipAddress, int port)
@@ -26,7 +27,7 @@ namespace Chatty.BLL.Network
 
         public void SendMessage(Message msg, Action<Response> callback)
         {
-            var req = new NewMessage(msg);
+            var req = new SendNewMessage(msg);
             _client.AddRequest(req, callback);
         }
     }

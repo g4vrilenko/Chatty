@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using Chatty.DAL.Models;
+using System.Data.Entity;
 
 namespace Chatty.DAL
 {
