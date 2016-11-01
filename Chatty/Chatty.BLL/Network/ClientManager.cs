@@ -27,7 +27,7 @@ namespace Chatty.BLL.Network
 
         public void SendMessage(Message msg, Action<Response> callback)
         {
-            var req = new SendNewMessage(msg);
+            var req = new NewMessage(msg);
             _client.AddRequest(req, callback);
         }
     }

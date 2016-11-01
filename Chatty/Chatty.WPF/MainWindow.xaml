@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chatty.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Chat" Height="450" Width="700">
     <Grid>
         <StackPanel Orientation="Horizontal" Height="35" VerticalAlignment="Top">
-            <Button Content="Page 1" MinWidth="100" Click="Bnt_ClickP1"></Button>
-            <Button Content="Page 2" MinWidth="100" Margin="10, 0, 0, 0" Click="Bnt_ClickP2"></Button>
+            <Button Content="Chat" MinWidth="100" Click="Bnt_ClickP1"></Button>
+            <Button Content="Server" MinWidth="100" Margin="10, 0, 0, 0" Click="Bnt_ClickP2"></Button>
         </StackPanel>
         <Frame x:Name="MainFrame" Margin="0,35,0,0" NavigationUIVisibility="Hidden"></Frame>
     </Grid>

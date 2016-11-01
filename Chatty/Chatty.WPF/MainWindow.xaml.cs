@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Chatty.BLL.Contracts;
+using Chatty.BLL.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,19 +22,32 @@ namespace Chatty.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        public IClientManager ClientManager { get; set; }
+        public Page Page1 { get; set; }
+        public Page Page2 { get; set; }
+        public Page LoginPage { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+            ClientManager = new ClientManager();
+            Page1 = new Page1();
+            Page2 = new Page2();
+            LoginPage = new LoginPage();
+            Application.Current.Properties["ClientManager"] = ClientManager;
+            MainFrame.Content = LoginPage;
         }
+
+        
 
         private void Bnt_ClickP1(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new Page1();
+            MainFrame.Content = Page1;
         }
 
         private void Bnt_ClickP2(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new Page2();
+            MainFrame.Content = Page2;
         }
     }
 }

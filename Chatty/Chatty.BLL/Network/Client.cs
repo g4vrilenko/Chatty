@@ -64,7 +64,7 @@ namespace Chatty.BLL.Network
                     if (_requests.Count != 0)
                     {
                         var req = new Update();
-                        Action<Response> callback = res => 
+                        Action<Response> callback = res =>
                         {
 
                         };
@@ -78,15 +78,18 @@ namespace Chatty.BLL.Network
 
         public void AddRequest(Request req, Action<Response> callback)
         {
-            _requests.Enqueue(new Tuple<Request, Action<Response>>(req, callback));
+            lock (_syncObj)
+            {
+                _requests.Enqueue(new Tuple<Request, Action<Response>>(req, callback));
+            }
         }
 
         private void ProcessRequests(object state)
         {
+            Tuple<Request, Action<Response>> req = null;
+            var hasReq = false;
             while (true)
             {
-                Tuple<Request, Action<Response>> req = null;
-                var hasReq = false;
                 lock (_syncObj)
                 {
                     if (_requests.Count != 0)
@@ -97,9 +100,11 @@ namespace Chatty.BLL.Network
                 }
                 if (hasReq)
                 {
-                    var res = Send(req.Item1);
+                    var res = Send(req.Item1);    
                     req.Item2?.Invoke(res);
+                    hasReq = false;
                 }
+                Thread.Sleep(50);
             }
         }
 

@@ -5,9 +5,9 @@ using Chatty.BLL.Entities;
 namespace Chatty.BLL.CommunicationEntities
 {
     [Serializable]
-    public class SendNewMessage : Request
+    public class NewMessage : Request
     {
-        public SendNewMessage(Message message)
+        public NewMessage(Message message)
         {
             Message = message;
         }
